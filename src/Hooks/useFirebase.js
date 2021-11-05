@@ -6,6 +6,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+  updateProfile,
 } from 'firebase/auth';
 
 initializeFirebase();
@@ -14,15 +17,45 @@ const useFirebase = () => {
   const [authError, setAuthError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const auth = getAuth();
+  const googleProvider = new GoogleAuthProvider();
+
+  // signin with Google
+  const signWithGoogle = (location, history) => {
+    setIsLoading(true);
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const redirectUrl = location?.state?.from || '/home';
+        history.push(redirectUrl);
+        setUser(result.user);
+        setAuthError('');
+      })
+      .catch((error) => {
+        setAuthError(error.message);
+      })
+      .finally(() => setIsLoading(false));
+  };
 
   // registration for new user
-  const registerNewUser = (email, password) => {
+  const registerNewUser = (email, password, name, history) => {
     setIsLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
+        const newUser = { email, displayName: name };
         // Signed in
-        setUser(result.user);
+        console.log('~ newUser', newUser);
+        setUser(newUser);
         setAuthError('');
+        // send name to firebase after creation
+        updateProfile(auth.currentUser, {
+          displayName: name,
+        })
+          .then(() => {
+            // Profile updated!
+          })
+          .catch((error) => {
+            // An error occurred
+          });
+        history.push('/home');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -86,6 +119,7 @@ const useFirebase = () => {
     registerNewUser,
     loginUser,
     userLogOut,
+    signWithGoogle,
   };
 };
 

@@ -15,7 +15,7 @@ import login from '../../../images/login.png';
 
 const Login = () => {
   const [loginData, setLoginData] = useState({});
-  const { user, loginUser, isLoading, authError } = useAuth();
+  const { user, loginUser, isLoading, authError, signWithGoogle } = useAuth();
   const location = useLocation();
   const history = useHistory();
 
@@ -32,6 +32,10 @@ const Login = () => {
     loginUser(loginData.email, loginData.password, location, history);
     e.preventDefault();
     e.target.reset();
+  };
+
+  const handleGoogleSignIn = () => {
+    signWithGoogle(location, history);
   };
   return (
     <Container>
@@ -53,44 +57,59 @@ const Login = () => {
             >
               Login
             </Typography>
-            {!isLoading && (
-              <form onSubmit={handleLoginSubmit}>
-                <TextField
-                  sx={{ width: '80%', m: 2 }}
-                  id="standard-basic"
-                  label="Your Email"
-                  variant="standard"
-                  type="email"
-                  name="email"
-                  onChange={handleOnChange}
-                />
-                <TextField
-                  sx={{ width: '80%', m: 2 }}
-                  id="standard-basic"
-                  label="Your Password"
-                  variant="standard"
-                  type="password"
-                  name="password"
-                  onChange={handleOnChange}
-                />
-                <Button
-                  sx={{ width: '80%', m: 2 }}
-                  variant="contained"
-                  style={{ background: '#19D3AE' }}
-                  type="submit"
-                >
-                  Login
+
+            <form onSubmit={handleLoginSubmit}>
+              <TextField
+                sx={{ width: '80%', m: 2 }}
+                id="standard-basic"
+                label="Your Email"
+                variant="standard"
+                type="email"
+                name="email"
+                onBlur={handleOnChange}
+              />
+              <TextField
+                sx={{ width: '80%', m: 2 }}
+                id="standard-basic"
+                label="Your Password"
+                variant="standard"
+                type="password"
+                name="password"
+                onBlur={handleOnChange}
+              />
+              <Button
+                sx={{ width: '80%', m: 2 }}
+                variant="contained"
+                style={{ background: '#19D3AE' }}
+                type="submit"
+              >
+                Login
+              </Button>
+              <NavLink style={{ textDecoration: 'none' }} to="/register">
+                <Button variant="text" style={{ color: '#19D3AE' }}>
+                  New User? Please Register
                 </Button>
-                <NavLink style={{ textDecoration: 'none' }} to="/register">
-                  <Button variant="text" style={{ color: '#19D3AE' }}>
-                    New User? Please Register
-                  </Button>
-                </NavLink>
-              </form>
-            )}
+              </NavLink>
+            </form>
+
             {isLoading && <CircularProgress />}
             {user?.email && <Alert severity="success">Login Successful</Alert>}
             {authError && <Alert severity="error">{authError}</Alert>}
+
+            <Typography
+              sx={{ width: '80%', m: 1 }}
+              style={{ color: '#19D3AE', fontWeight: 'bold' }}
+              variant="h5"
+            >
+              --------OR---------
+            </Typography>
+            <Button
+              onClick={handleGoogleSignIn}
+              variant="contained"
+              style={{ background: '#19D3AE' }}
+            >
+              SignIn with Gooogle
+            </Button>
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>
