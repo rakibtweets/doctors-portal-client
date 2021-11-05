@@ -37,7 +37,7 @@ const Navigation = () => {
               <Button color="inherit">Login</Button>
             </Link>
           ) : (
-            <Link style={{ textDecoration: 'none', color: 'white' }}>
+            <Link to="/home" style={{ textDecoration: 'none', color: 'white' }}>
               <Button onClick={userLogOut} color="inherit">
                 LogOut
               </Button>

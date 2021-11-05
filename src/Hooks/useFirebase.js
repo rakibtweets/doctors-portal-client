@@ -11,7 +11,7 @@ import {
 initializeFirebase();
 const useFirebase = () => {
   const [user, setUser] = useState({});
-  const [error, setError] = useState('');
+  const [authError, setAuthError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const auth = getAuth();
 
@@ -22,14 +22,13 @@ const useFirebase = () => {
       .then((result) => {
         // Signed in
         setUser(result.user);
-        // ...
+        setAuthError('');
       })
       .catch((error) => {
         const errorCode = error.code;
         console.log('~ errorCode', errorCode);
         const errorMessage = error.message;
-        setError(errorMessage);
-        // ..
+        setAuthError(errorMessage);
       })
       .finally(() => setIsLoading(false));
   };
@@ -42,12 +41,11 @@ const useFirebase = () => {
       .then((result) => {
         // Signed in
         setUser(result.user);
-
-        // ...
+        setAuthError('');
       })
       .catch((error) => {
         const errorMessage = error.message;
-        setError(errorMessage);
+        setAuthError(errorMessage);
       })
       .finally(() => setIsLoading(false));
   };
@@ -80,7 +78,7 @@ const useFirebase = () => {
 
   return {
     user,
-    error,
+    authError,
     isLoading,
     registerNewUser,
     loginUser,

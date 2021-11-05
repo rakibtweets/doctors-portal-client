@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   CircularProgress,
   Container,
@@ -14,7 +15,7 @@ import login from '../../../images/login.png';
 
 const Register = () => {
   const [loginData, setLoginData] = useState({});
-  const { registerNewUser, isLoading } = useAuth();
+  const { user, registerNewUser, isLoading, authError } = useAuth();
   const handleOnChange = (e) => {
     const field = e.target.name;
     const value = e.target.value;
@@ -97,6 +98,12 @@ const Register = () => {
               </form>
             )}
             {isLoading && <CircularProgress />}
+            {user?.email && (
+              <Alert severity="success">
+                Your registration have been successful
+              </Alert>
+            )}
+            {authError && <Alert severity="error">{authError}</Alert>}
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>
