@@ -35,10 +35,13 @@ const useFirebase = () => {
 
   // login existing user
 
-  const loginUser = (email, password) => {
+  const loginUser = (email, password, location, history) => {
     setIsLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
+        // redirect location
+        const redirectUrl = location?.state?.from || '/home';
+        history.push(redirectUrl);
         // Signed in
         setUser(result.user);
         setAuthError('');
