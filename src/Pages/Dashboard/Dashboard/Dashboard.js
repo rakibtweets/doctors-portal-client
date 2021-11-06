@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,12 +14,16 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { Grid } from '@mui/material';
+import Calender from '../../Shared/Calender/Calender';
+import Appointments from '../Appointments/Appointments';
 
 const drawerWidth = 200;
 
 const Dashboard = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [date, setDate] = useState(new Date());
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -74,7 +78,6 @@ const Dashboard = (props) => {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"
@@ -116,7 +119,16 @@ const Dashboard = (props) => {
         }}
       >
         <Toolbar />
-        <Typography paragraph>content here</Typography>
+        <Box>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <Calender date={date} setDate={setDate} />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Appointments date={date} />
+            </Grid>
+          </Grid>
+        </Box>
       </Box>
     </Box>
   );
