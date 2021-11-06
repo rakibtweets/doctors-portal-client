@@ -14,17 +14,25 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Button, Grid } from '@mui/material';
-import Calender from '../../Shared/Calender/Calender';
-import Appointments from '../Appointments/Appointments';
-import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+  useRouteMatch,
+} from 'react-router-dom';
+import DashboardHome from '../DashboardHome/DashboardHome';
+import MakeAdmin from '../MakeAdmin/MakeAdmin';
+import AddDoctor from '../AddDoctor/AddDoctor';
 
 const drawerWidth = 200;
 
 const Dashboard = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [date, setDate] = useState(new Date());
+  let { path, url } = useRouteMatch();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -34,9 +42,20 @@ const Dashboard = (props) => {
     <div>
       <Toolbar />
       <Divider />
+
       <Link to="/appointment">
         <Button variant="text">Appointment</Button>
       </Link>
+      <Link to={`${url}`}>
+        <Button variant="text">Dashboard</Button>
+      </Link>
+      <Link to={`${url}/makeAdmin`}>
+        <Button variant="text">Make Admin</Button>
+      </Link>
+      <Link to={`${url}/addDoctor`}>
+        <Button variant="text">Add Doctor</Button>
+      </Link>
+
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem button key={text}>
@@ -53,7 +72,7 @@ const Dashboard = (props) => {
   const container =
     window !== undefined ? () => window().document.body : undefined;
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', mt: 3 }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -123,15 +142,19 @@ const Dashboard = (props) => {
         }}
       >
         <Toolbar />
+        {/* nesting route */}
         <Box>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <Calender date={date} setDate={setDate} />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Appointments date={date} />
-            </Grid>
-          </Grid>
+          <Switch>
+            <Route exact path={path}>
+              <DashboardHome />
+            </Route>
+            <Route path={`${path}/makeAdmin`}>
+              <MakeAdmin />
+            </Route>
+            <Route path={`${path}/addDoctor`}>
+              <AddDoctor />
+            </Route>
+          </Switch>
         </Box>
       </Box>
     </Box>
