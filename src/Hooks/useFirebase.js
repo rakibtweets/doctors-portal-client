@@ -9,6 +9,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   updateProfile,
+  getIdToken,
 } from 'firebase/auth';
 import swal from 'sweetalert';
 
@@ -18,6 +19,7 @@ const useFirebase = () => {
   const [authError, setAuthError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [admin, setAdmin] = useState(false);
+  const [authToken, setAuthToken] = useState('');
 
   const auth = getAuth();
   const googleProvider = new GoogleAuthProvider();
@@ -106,6 +108,9 @@ const useFirebase = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
+        getIdToken(user).then((idToken) => {
+          setAuthToken(idToken);
+        });
       } else {
         // User is signed out
         setUser({});
@@ -152,6 +157,7 @@ const useFirebase = () => {
   return {
     user,
     admin,
+    authToken,
     authError,
     isLoading,
     registerNewUser,

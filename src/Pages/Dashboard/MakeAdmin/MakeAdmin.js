@@ -1,9 +1,11 @@
 import { Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import swal from 'sweetalert';
+import useAuth from '../../../Hooks/useAuth';
 
 const MakeAdmin = () => {
   const [email, setEmail] = useState('');
+  const { authToken } = useAuth();
 
   const handleOnBlur = (e) => {
     setEmail(e.target.value);
@@ -14,6 +16,7 @@ const MakeAdmin = () => {
     fetch('http://localhost:5000/users/admin', {
       method: 'PUT',
       headers: {
+        authorization: `Bearer ${authToken}`,
         'content-type': 'application/json',
       },
       body: JSON.stringify(user),
