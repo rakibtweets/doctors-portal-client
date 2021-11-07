@@ -10,12 +10,15 @@ import {
   signInWithPopup,
   updateProfile,
 } from 'firebase/auth';
+import swal from 'sweetalert';
 
 initializeFirebase();
 const useFirebase = () => {
   const [user, setUser] = useState({});
   const [authError, setAuthError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [admin, setAdmin] = useState(false);
+
   const auth = getAuth();
   const googleProvider = new GoogleAuthProvider();
 
@@ -63,11 +66,14 @@ const useFirebase = () => {
           .catch((error) => {
             // An error occurred
           });
-        history.push('/home');
+
+        if (result) {
+          swal('Registration Successfull', 'Please Login', 'success');
+          userLogOut();
+          history.push('/login');
+        }
       })
       .catch((error) => {
-        const errorCode = error.code;
-        console.log('~ errorCode', errorCode);
         const errorMessage = error.message;
         setAuthError(errorMessage);
       })
@@ -109,6 +115,15 @@ const useFirebase = () => {
     return () => unsubscribe;
   }, [auth]);
 
+  // checking admin or not
+  useEffect(() => {
+    fetch(`http://localhost:5000/users/${user?.email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setAdmin(data.admin);
+      });
+  }, [user?.email]);
+
   const userLogOut = () => {
     setIsLoading(true);
     signOut(auth)
@@ -123,16 +138,6 @@ const useFirebase = () => {
 
   // save user information to database
 
-  // const saveUser = (email, displayName) => {
-  //   const user = { email, displayName };
-  //   fetch('http://localhost:5000/users', {
-  //     method: 'POST',
-  //     headers: {
-  //       'content-type': 'application/json',
-  //     },
-  //     body: JSON.stringify(user),
-  //   }).then();
-  // };
   const saveUser = (email, displayName, method) => {
     const user = { email, displayName };
     fetch('http://localhost:5000/users', {
@@ -146,6 +151,7 @@ const useFirebase = () => {
 
   return {
     user,
+    admin,
     authError,
     isLoading,
     registerNewUser,

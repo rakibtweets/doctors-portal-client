@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,17 +15,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams,
-  useRouteMatch,
-} from 'react-router-dom';
+import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
 import DashboardHome from '../DashboardHome/DashboardHome';
 import MakeAdmin from '../MakeAdmin/MakeAdmin';
 import AddDoctor from '../AddDoctor/AddDoctor';
+import useAuth from '../../../Hooks/useAuth';
 
 const drawerWidth = 200;
 
@@ -33,6 +27,7 @@ const Dashboard = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   let { path, url } = useRouteMatch();
+  const { admin } = useAuth();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -49,12 +44,16 @@ const Dashboard = (props) => {
       <Link to={`${url}`}>
         <Button variant="text">Dashboard</Button>
       </Link>
-      <Link to={`${url}/makeAdmin`}>
-        <Button variant="text">Make Admin</Button>
-      </Link>
-      <Link to={`${url}/addDoctor`}>
-        <Button variant="text">Add Doctor</Button>
-      </Link>
+      {admin && (
+        <Box>
+          <Link to={`${url}/makeAdmin`}>
+            <Button variant="text">Make Admin</Button>
+          </Link>
+          <Link to={`${url}/addDoctor`}>
+            <Button variant="text">Add Doctor</Button>
+          </Link>
+        </Box>
+      )}
 
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
