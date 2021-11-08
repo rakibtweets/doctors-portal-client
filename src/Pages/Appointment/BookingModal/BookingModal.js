@@ -35,7 +35,6 @@ const BookingModal = ({ handleBookingClose, openBooking, booking, date }) => {
     const field = e.target.name;
     const value = e.target.value;
     const newBookingInfo = { ...bookingInfo };
-    console.log('~ newBookingInfo', newBookingInfo);
     newBookingInfo[field] = value;
     setBookingInfo(newBookingInfo);
     e.preventDefault();
@@ -53,7 +52,7 @@ const BookingModal = ({ handleBookingClose, openBooking, booking, date }) => {
 
     // sent to the server
 
-    fetch('http://localhost:5000/appointments', {
+    fetch('https://quiet-plains-12612.herokuapp.com/appointments', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
