@@ -32,7 +32,7 @@ const Appointments = ({ date }) => {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
         <Typography
           variant="h5"
-          sx={{ color: '#1CC7C1', fontSize: 16, fontWeight: 500 }}
+          sx={{ color: '#1CC7C1', fontSize: 17, fontWeight: 500 }}
         >
           Appointments {appointments.length}
         </Typography>

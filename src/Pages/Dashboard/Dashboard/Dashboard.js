@@ -5,12 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -35,38 +29,40 @@ const Dashboard = (props) => {
   };
 
   const drawer = (
-    <div>
+    <Box
+      // sx={{ bgcolor: '#19D3AE', height: '100vh' }}
+      style={{ color: 'white', background: '#19D3AE', height: '100vh' }}
+    >
       <Toolbar />
       <Divider />
 
-      <Link to="/appointment">
-        <Button variant="text">Appointment</Button>
+      <Link
+        style={{ textDecoration: 'none', color: 'white' }}
+        to="/appointment"
+      >
+        <Button variant="inherit">Appointment</Button>
       </Link>
-      <Link to={`${url}`}>
-        <Button variant="text">Dashboard</Button>
+      <Link style={{ textDecoration: 'none', color: 'white' }} to={`${url}`}>
+        <Button variant="inherit">Dashboard</Button>
       </Link>
+
       {admin && (
         <Box>
-          <Link to={`${url}/makeAdmin`}>
-            <Button variant="text">Make Admin</Button>
+          <Link
+            style={{ textDecoration: 'none', color: 'white' }}
+            to={`${url}/makeAdmin`}
+          >
+            <Button variant="inherit">Make Admin</Button>
           </Link>
-          <Link to={`${url}/addDoctor`}>
-            <Button variant="text">Add Doctor</Button>
+          <Link
+            style={{ textDecoration: 'none', color: 'white' }}
+            to={`${url}/addDoctor`}
+          >
+            <Button variant="inherit">Add Doctor</Button>
           </Link>
         </Box>
       )}
-
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
+    </Box>
   );
 
   const container =
@@ -79,6 +75,7 @@ const Dashboard = (props) => {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          bgcolor: '#FFFFFF',
         }}
       >
         <Toolbar>
@@ -89,9 +86,9 @@ const Dashboard = (props) => {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: 'none' } }}
           >
-            <MenuIcon />
+            <MenuIcon style={{ color: 'black' }} />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" color="#19D3AE">
             Dashboard
           </Typography>
         </Toolbar>
