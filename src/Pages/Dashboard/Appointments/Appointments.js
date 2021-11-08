@@ -27,7 +27,7 @@ const Appointments = ({ date }) => {
       .then((data) => {
         setAppointments(data);
       });
-  }, [date]);
+  }, [date, user.email, authToken]);
 
   return (
     <>
