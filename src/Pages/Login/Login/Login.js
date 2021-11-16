@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
-import { NavLink, useLocation, useHistory } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../../../Hooks/useAuth';
 import login from '../../../images/login.png';
 
@@ -17,7 +17,7 @@ const Login = () => {
   const [loginData, setLoginData] = useState({});
   const { user, loginUser, isLoading, authError, signWithGoogle } = useAuth();
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const field = e.target.name;
@@ -28,13 +28,13 @@ const Login = () => {
   };
 
   const handleLoginSubmit = (e) => {
-    loginUser(loginData.email, loginData.password, location, history);
+    loginUser(loginData.email, loginData.password, location, navigate);
     e.preventDefault();
     e.target.reset();
   };
 
   const handleGoogleSignIn = () => {
-    signWithGoogle(location, history);
+    signWithGoogle(location, navigate);
   };
   return (
     <Container>

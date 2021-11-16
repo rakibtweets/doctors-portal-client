@@ -9,20 +9,19 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import useAuth from '../../../Hooks/useAuth';
 import login from '../../../images/login.png';
 
 const Register = () => {
   const [loginData, setLoginData] = useState({});
   const { user, registerNewUser, isLoading, authError } = useAuth();
-  const history = useHistory();
+  let navigate = useNavigate();
 
   const handleOnBlur = (e) => {
     const field = e.target.name;
     const value = e.target.value;
     const newLoginData = { ...loginData };
-    console.log('~ newLoginData', newLoginData);
     newLoginData[field] = value;
     setLoginData(newLoginData);
   };
@@ -36,7 +35,7 @@ const Register = () => {
       loginData.email,
       loginData.password,
       loginData.name,
-      history
+      navigate
     );
     e.preventDefault();
     // e.target.reset();

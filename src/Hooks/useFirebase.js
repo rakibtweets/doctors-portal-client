@@ -25,13 +25,13 @@ const useFirebase = () => {
   const googleProvider = new GoogleAuthProvider();
 
   // signin with Google
-  const signWithGoogle = (location, history) => {
+  const signWithGoogle = (location, navigate) => {
     setIsLoading(true);
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         const user = result.user;
         const redirectUrl = location?.state?.from || '/home';
-        history.push(redirectUrl);
+        navigate(redirectUrl);
 
         setUser(user);
         saveUser(user.email, user.displayName, 'PUT');
@@ -44,14 +44,13 @@ const useFirebase = () => {
   };
 
   // registration for new user
-  const registerNewUser = (email, password, name, history) => {
+  const registerNewUser = (email, password, name, navigate) => {
     setIsLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         const newUser = { email, displayName: name };
         // Signed in
         setUser(newUser);
-
         // save user to database
         saveUser(email, name, 'POST');
 
@@ -72,7 +71,7 @@ const useFirebase = () => {
         if (result) {
           swal('Registration Successfull', 'Please Login', 'success');
           userLogOut();
-          history.push('/login');
+          navigate('/login');
         }
       })
       .catch((error) => {
@@ -84,13 +83,13 @@ const useFirebase = () => {
 
   // login existing user
 
-  const loginUser = (email, password, location, history) => {
+  const loginUser = (email, password, location, navigate) => {
     setIsLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         // redirect location
         const redirectUrl = location?.state?.from || '/home';
-        history.push(redirectUrl);
+        navigate(redirectUrl);
         // Signed in
         setUser(result.user);
 
