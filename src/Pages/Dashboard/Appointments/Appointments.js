@@ -9,6 +9,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const Appointments = ({ date }) => {
   const { user, authToken } = useAuth();
@@ -94,10 +96,16 @@ const Appointments = ({ date }) => {
                   {appointment.time}
                 </TableCell>
                 <TableCell
-                  sx={{ color: 'tomato', fontSize: 14, fontWeight: 500 }}
+                  sx={{ color: 'green', fontSize: 14, fontWeight: 500 }}
                   align="center"
                 >
-                  Delete
+                  {appointment.payment ? (
+                    'Paid'
+                  ) : (
+                    <Link to={`/dashboard/payment/${appointment._id}`}>
+                      <Button variant="text">Pay</Button>
+                    </Link>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
